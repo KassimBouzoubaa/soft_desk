@@ -13,8 +13,8 @@ Soft Desk est une app qui permet de remonter et suivre des problèmes techniques
 
 ## Spécifications Techniques
 
-- **Framework** : Django
-- **Base de Données** : SQLite (fichier db.sqlite3 inclus dans le repository)
+- **Framework** : Django Rest Framework
+
 ## Installation
 Pour utiliser ce logiciel, veuillez suivre ces étapes d'installation :
 
@@ -37,7 +37,7 @@ pipenv shell
 ```
 5. Installez les dépendances requises :
 ```bash
-pip install -r requirements.txt
+pipenv install -r requirements.txt
 ```
 
 6. Appliquer les migrations :
