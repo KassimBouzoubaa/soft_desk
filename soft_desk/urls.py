@@ -25,4 +25,5 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include('users.urls')),  # Inclure les URLs de votre application
+    path('api/', include('api_manager.urls')),  # Inclure les URLs de votre application
 ]

@@ -1,5 +1,8 @@
-from rest_framework import routers
+from rest_framework.routers import DefaultRouter
+from .views import ProjectViewSet
 
-router = routers.DefaultRouter()
+# Créer un routeur et enregistrer la vue UserViewSet
+router = DefaultRouter()
+router.register(r'projects', ProjectViewSet)
 
 urlpatterns = router.urls
