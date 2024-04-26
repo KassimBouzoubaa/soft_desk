@@ -3,11 +3,11 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .models import Project, Contributor
 from .serializers import ProjectRegistrationSerializer, ProjectDetailSerializer
-from .permissions import IsContributor
+from .permissions import IsContributor, IsAuthorOrReadOnly
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
-    permission_classes = [IsAuthenticated, IsContributor]
+    permission_classes = [IsAuthenticated, IsContributor, IsAuthorOrReadOnly]
     authentication_classes = [JWTAuthentication]
 
 

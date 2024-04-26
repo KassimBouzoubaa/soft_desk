@@ -5,7 +5,7 @@ from users.serializers import UserDetailSerializer
 class ContributorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contributor
-        fields = ['id', 'user', 'project', 'created_time']
+        fields = ['user', 'project', 'created_time']
 
 class ProjectRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
