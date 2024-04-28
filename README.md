@@ -6,6 +6,9 @@ Soft Desk est une app qui permet de remonter et suivre des problèmes techniques
 
 ## Fonctionnalités
 
+Un utilisateur peux créer un projet et en devient l'auteur et un contributeur. Il peut ajouter des contributeurs. Il peut également créer des issues et des commentaires.
+
+Seul l'auteur du projet, des issues ou des commentaires peuvent les modifier ou les supprimer.
 
 ### Développeurs
 

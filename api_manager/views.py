@@ -2,15 +2,18 @@ from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .models import Project, Contributor, Issue
+from .models import Project, Contributor, Issue, Comment
 from .serializers import (
     ProjectRegistrationSerializer,
     ProjectDetailSerializer,
     IssueRegistrationSerializer,
     IssueDetailSerializer,
     IssueListSerializer,
+    CommentDetailSerializer,
+    CommentListSerializer,
+    CommentRegistrationSerializer,
 )
-from .permissions import IsContributor, IsAuthorOrReadOnly, IsContributorOfProject
+from .permissions import IsContributor, IsAuthorOrReadOnly
 from users.models import User
 
 
@@ -80,3 +83,26 @@ class IssueViewSet(viewsets.ModelViewSet):
         serializer.save(
             author=user, project=project, contributors=validated_contributors
         )
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    permission_classes = [IsAuthenticated, IsContributor, IsAuthorOrReadOnly]
+    authentication_classes = [JWTAuthentication]
+
+    def get_serializer_class(self):
+        if self.action == "create" or self.action == "update":
+            return CommentRegistrationSerializer
+        elif self.action == "list":
+            return CommentListSerializer
+        else:
+            return CommentDetailSerializer
+
+    def perform_create(self, serializer):
+        user = self.request.user
+
+        issue_pk = self.kwargs["issue_pk"]
+        issue = get_object_or_404(Issue, pk=issue_pk)
+
+        # Enregistrer l'issue avec les contributeurs validés
+        serializer.save(author=user, issue=issue)

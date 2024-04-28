@@ -1,12 +1,20 @@
 from rest_framework.permissions import BasePermission
-from .models import Contributor
+from .models import Contributor, Project, Issue, Comment
 
 
 class IsContributor(BasePermission):
     def has_object_permission(self, request, view, obj):
-        # Vérifie si l'utilisateur actuel est un contributeur du projet
-        return obj.contributors.filter(user=request.user).exists()
-
+        # Vérifier si l'utilisateur actuel est un contributeur du projet, de l'issue ou du commentaire
+        if isinstance(obj, Project):
+            # Vérifier si l'utilisateur est un contributeur du projet
+            return obj.contributors.filter(user=request.user).exists()
+        elif isinstance(obj, Issue):
+            # Vérifier si l'utilisateur est un contributeur de l'issue
+            return obj.project.contributors.filter(user=request.user).exists()
+        elif isinstance(obj, Comment):
+            # Vérifier si l'utilisateur est un contributeur du projet associé au commentaire
+            return obj.issue.project.contributors.filter(user=request.user).exists()
+        return False
 
 class IsAuthorOrReadOnly(BasePermission):
     """
@@ -20,18 +28,3 @@ class IsAuthorOrReadOnly(BasePermission):
 
         # Vérifier si l'utilisateur est l'auteur du projet.
         return obj.author == request.user
-
-
-class IsContributorOfProject(BasePermission):
-    """
-    Permission personnalisée pour vérifier si l'utilisateur est un contributeur du projet.
-    """
-
-    def has_permission(self, request, view):
-        project_id = request.data.get("project")
-        if project_id:
-            # Vérifier si l'utilisateur est un contributeur du projet
-            return Contributor.objects.filter(
-                project_id=project_id, user=request.user
-            ).exists()
-        return False
