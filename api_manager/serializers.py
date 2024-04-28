@@ -94,18 +94,18 @@ class CommentListSerializer(serializers.ModelSerializer):
 
 class CommentDetailSerializer(serializers.ModelSerializer):
     author = serializers.CharField(source="author.username")
-    # issue = serializers.HyperlinkedRelatedField(
-    #        view_name='project-issue-detail',  # Nom de la vue pour récupérer les détails de l'issue
-    #       lookup_field='pk"',  # Champ utilisé pour identifier l'issue (dans ce cas, l'ID de l'issue)
-    #      read_only=True
-    # )
-    issue_id = serializers.PrimaryKeyRelatedField(source="issue", read_only=True)
+    
+    issue = serializers.HyperlinkedRelatedField(
+            view_name='project-issue-detail',  # Nom de la vue pour récupérer les détails de l'issue
+           lookup_field='pk',  # Champ utilisé pour identifier l'issue (dans ce cas, l'ID de l'issue)
+          read_only=True
+     )
 
     id = serializers.CharField()
 
     class Meta:
         model = Comment
-        fields = ["id", "description", "created_time", "author", "issue_id"]
+        fields = ["id", "description", "created_time", "author", "issue"]
 
 
 class CommentRegistrationSerializer(serializers.ModelSerializer):
